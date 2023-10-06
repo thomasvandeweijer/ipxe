@@ -11,7 +11,7 @@
       "path": "/etc/sudoers.d/thomas",
       "mode": 420,
       "overwrite": true,
-      "contents": { "source": "data:,thomas%20ALL%61%40ALL%41%20NOPASSWD%58ALL" }
+      "contents": { "source": "data:,thomas%20ALL=(ALL)%20NOPASSWD:ALL" }
     }]
   },
   "passwd": {
