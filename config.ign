@@ -7,5 +7,15 @@
       "overwrite": true,
       "contents": { "source": "data:,TWe-iPXE" }
     }]
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "thomas",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAtprxfS7ESwE+hvEWtyXMr8/kKdIe/Y/zQCkcQCxlML"
+        ]
+      }
+    ]
   }
 }
