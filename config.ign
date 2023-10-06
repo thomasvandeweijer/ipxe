@@ -6,6 +6,12 @@
       "mode": 420,
       "overwrite": true,
       "contents": { "source": "data:,TWe-iPXE" }
+    },
+    {
+      "path": "/etc/sudoers.d/thomas",
+      "mode": 420,
+      "overwrite": true,
+      "contents": { "source": "data:,thomas ALL=(ALL) NOPASSWD:ALL" }
     }]
   },
   "passwd": {
