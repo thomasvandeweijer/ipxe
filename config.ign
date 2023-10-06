@@ -1,0 +1,11 @@
+{
+  "ignition": { "version": "3.0.0" },
+  "storage": {
+    "files": [{
+      "path": "/etc/hostname",
+      "mode": 420,
+      "overwrite": true,
+      "contents": { "source": "data:,TWe-iPXE" }
+    }]
+  }
+}
