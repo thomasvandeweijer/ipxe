@@ -36,18 +36,6 @@
       "path": "/var/lib/data",
       "format": "ext4",
       "label": "DATA"
-    }],
-    "files": [{
-      "path": "/etc/hostname",
-      "mode": 420,
-      "overwrite": true,
-      "contents": { "source": "data:,TWe-iPXE" }
-    },
-    {
-      "path": "/etc/sudoers.d/thomas",
-      "mode": 420,
-      "overwrite": true,
-      "contents": { "source": "data:,thomas%20ALL=(ALL)%20NOPASSWD:ALL" }
     }]
   },
   "systemd": {
@@ -61,15 +49,5 @@
       "enabled": true,
       "contents": "[Unit]\nDescription=Podman container-web.service\nDocumentation=man:podman-generate-systemd(1)\nWants=network.target\nAfter=network-online.target\n\n[Service]\nEnvironment=PODMAN_SYSTEMD_UNIT=%n\nRestart=on-failure\nTimeoutStopSec=70\nExecStartPre=/bin/rm -f %t/container-web.pid %t/container-web.ctr-id\nExecStart=/usr/bin/podman container run --conmon-pidfile %t/container-web.pid --cidfile %t/container-web.ctr-id --cgroups=no-conmon --replace -d -p 80:80 --name web docker.io/library/nginx\nExecStop=/usr/bin/podman container stop --ignore --cidfile %t/container-web.ctr-id -t 10\nExecStopPost=/usr/bin/podman container rm --ignore -f --cidfile %t/container-web.ctr-id\nPIDFile=%t/container-web.pid\nType=forking\n\n[Install]\nWantedBy=multi-user.target default.target"
     }]
-  },
-  "passwd": {
-    "users": [
-      {
-        "name": "thomas",
-        "sshAuthorizedKeys": [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAtprxfS7ESwE+hvEWtyXMr8/kKdIe/Y/zQCkcQCxlML"
-        ]
-      }
-    ]
   }
 }
