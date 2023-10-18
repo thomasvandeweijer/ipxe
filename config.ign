@@ -1,19 +1,7 @@
 {
   "ignition": { "version": "3.0.0" },
   "storage": {
-    "files": [{
-      "path": "/etc/hostname",
-      "mode": 420,
-      "overwrite": true,
-      "contents": { "source": "data:,TWe-iPXE" }
-    },
-    {
-      "path": "/etc/sudoers.d/thomas",
-      "mode": 420,
-      "overwrite": true,
-      "contents": { "source": "data:,thomas%20ALL=(ALL)%20NOPASSWD:ALL" }
-    }]
-  "disks": [
+    "disks": [
       {
         "device": "/dev/sda",
         "wipeTable": true,
@@ -48,6 +36,18 @@
       "path": "/var/lib/data",
       "format": "ext4",
       "label": "DATA"
+    }],
+    "files": [{
+      "path": "/etc/hostname",
+      "mode": 420,
+      "overwrite": true,
+      "contents": { "source": "data:,TWe-iPXE" }
+    },
+    {
+      "path": "/etc/sudoers.d/thomas",
+      "mode": 420,
+      "overwrite": true,
+      "contents": { "source": "data:,thomas%20ALL=(ALL)%20NOPASSWD:ALL" }
     }]
   },
   "systemd": {
