@@ -8,7 +8,7 @@
         "partitions": [{
           "label": "raid.1.1",
           "number": 1,
-          "sizeMiB": 1024,
+          "sizeMiB": 0,
           "startMiB": 0
         }]
       },
@@ -18,7 +18,7 @@
         "partitions": [{
           "label": "raid.1.2",
           "number": 1,
-          "sizeMiB": 1024,
+          "sizeMiB": 0,
           "startMiB": 0
         }]
       }
@@ -28,7 +28,7 @@
         "/dev/disk/by-partlabel/raid.1.1",
         "/dev/disk/by-partlabel/raid.1.2"
       ],
-      "level": "stripe",
+      "level": "raid1",
       "name": "data"
     }],
     "filesystems": [{
