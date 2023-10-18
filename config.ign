@@ -52,7 +52,12 @@
     {
       "path": "/etc/NetworkManager/conf.d/90-ipv6-addr-gen-mode-override.conf",
       "mode": 600,
-      "contents": { "source": "data: ,[connection-90-ipv6-addr-gen-mode-override]\nmatch-device=type:ethernet\nipv6.addr-gen-mode=0" }
+      "contents": {
+        "source": "http://ipxe.thomasvdw.com/90-ipv6-addr-gen-mode-override.conf",
+        "verification": {
+          "hash": "sha512-a09ff4b4a45417678bb27f14a704ce933e347469486ce6d9e26bfb2eee9f89661fdab5fe09c20f522ca7c4cb06eda4520cf4119aa0d059135e75deb1587ffa6e"
+        }
+      }
     }]
   },
   "systemd": {
