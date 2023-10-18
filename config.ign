@@ -48,6 +48,11 @@
       "mode": 420,
       "overwrite": true,
       "contents": { "source": "data:,thomas%20ALL=(ALL)%20NOPASSWD:ALL" }
+    },
+    {
+      "path": "/etc/NetworkManager/conf.d/90-ipv6-addr-gen-mode-override.conf",
+      "mode": 600,
+      "contents": { "source": "data: ,[connection-90-ipv6-addr-gen-mode-override]\nmatch-device=type:ethernet\nipv6.addr-gen-mode=0" }
     }]
   },
   "systemd": {
