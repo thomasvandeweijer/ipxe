@@ -13,6 +13,49 @@
       "overwrite": true,
       "contents": { "source": "data:,thomas%20ALL=(ALL)%20NOPASSWD:ALL" }
     }]
+  "disks": [
+      {
+        "device": "/dev/sda",
+        "wipeTable": true,
+        "partitions": [{
+          "label": "raid.1.1",
+          "number": 1,
+          "sizeMiB": 1024,
+          "startMiB": 0
+        }]
+      },
+      {
+        "device": "/dev/sdb",
+        "wipeTable": true,
+        "partitions": [{
+          "label": "raid.1.2",
+          "number": 1,
+          "sizeMiB": 1024,
+          "startMiB": 0
+        }]
+      }
+    ],
+    "raid": [{
+      "devices": [
+        "/dev/disk/by-partlabel/raid.1.1",
+        "/dev/disk/by-partlabel/raid.1.2"
+      ],
+      "level": "stripe",
+      "name": "data"
+    }],
+    "filesystems": [{
+      "device": "/dev/md/data",
+      "path": "/var/lib/data",
+      "format": "ext4",
+      "label": "DATA"
+    }]
+  },
+  "systemd": {
+    "units": [{
+      "name": "var-lib-data.mount",
+      "enabled": true,
+      "contents": "[Mount]\nWhat=/dev/md/data\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target"
+    }]
   },
   "passwd": {
     "users": [
