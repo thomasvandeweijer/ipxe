@@ -10,5 +10,5 @@ NOTE: This repository is meant for testing and might contain invalid/broken code
 
 ## ipxe urls
 
-Fedora CoreOS: http://ipxe.thomasvdw.com/fcos/
-Flatcar Linux: http://ipxe.thomasvdw.com/flatcar/
+- Fedora CoreOS: http://ipxe.thomasvdw.com/fcos/
+- Flatcar Linux: http://ipxe.thomasvdw.com/flatcar/
