@@ -40,7 +40,7 @@
     "files": [{
       "path": "/etc/systemd/network/10-dummy0.netdev",
       "mode": 420,
-      "contents": { "source": "data:,[NetDev]\nName=dummy0\nKind=dummy" }
+      "contents": { "source": "data:,%5BNetDev%5D%0AName%3Ddummy0%0AKind%3Ddummy" }
     }]
   },
   "systemd": {
