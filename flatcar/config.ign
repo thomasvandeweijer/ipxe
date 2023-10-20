@@ -36,6 +36,11 @@
       "path": "/var/lib/data",
       "format": "ext4",
       "label": "DATA"
+    }],
+    "files": [{
+      "path": "/etc/systemd/network/10-dummy0.netdev",
+      "mode": 420,
+      "contents": { "source": "data:,[NetDev]\nName=dummy0\nKind=dummy" }
     }]
   },
   "systemd": {
@@ -47,7 +52,7 @@
     {
       "name": "container-web.service",
       "enabled": true,
-      "contents": "[Unit]\nDescription=Docker container-web.service\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=docker run -p 80:80 --restart=always --name web nginx\nExecStop=docker stop web\n\n[Install]\nWantedBy=multi-user.target"
+      "contents": "[Unit]\nDescription=Docker container-web.service\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=docker run --network host --restart=always --name web nginx\nExecStop=docker stop web\n\n[Install]\nWantedBy=multi-user.target"
     }]
   }
 }
