@@ -54,9 +54,19 @@
       "enabled": true
     },
     {
+      "name": "container-dummy-network.service",
+      "enabled": true,
+      "contents": "[Unit]\nDescription=Makes a docker network that binds to dummy0\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=exec\nTimeoutStartSec=0\nExecStart=/usr/bin/docker network create -d macvlan --ipv6 --subnet=192.168.1.0/24 --gateway=192.168.1.1 --subnet=fd00:abc8:abc8::/64 --gateway=fd00:abc8:abc8::1 -o parent=dummy0 docker-dummy\nRestart=on-failure\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
+    },
+    {
       "name": "container-web.service",
       "enabled": true,
-      "contents": "[Unit]\nDescription=Docker container-web.service\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force web\nExecStart=/usr/bin/docker run --network host --name web --pull always nginx\nExecStop=/usr/bin/docker stop web\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
+      "contents": "[Unit]\nDescription=Docker container running Nginx\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force web\nExecStart=/usr/bin/docker run --network host --name web --pull always nginx\nExecStop=/usr/bin/docker stop web\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
+    },
+    {
+      "name": "container-web2.service",
+      "enabled": true,
+      "contents": "[Unit]\nDescription=Docker container running Nginx\nAfter=container-dummy-network.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force web\nExecStart=/usr/bin/docker run --network docker-dummy --ip 192.168.1.2 --ip fd00:abc8:abc8::2 --name web2 --pull always nginx\nExecStop=/usr/bin/docker stop web2\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
     }]
   }
 }
