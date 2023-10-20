@@ -47,7 +47,7 @@
     {
       "name": "container-web.service",
       "enabled": true,
-      "contents": "[Unit]\nDescription=Podman container-web.service\nDocumentation=man:podman-generate-systemd(1)\nWants=network.target\nAfter=network-online.target\n\n[Service]\nEnvironment=PODMAN_SYSTEMD_UNIT=%n\nRestart=on-failure\nTimeoutStopSec=70\nExecStartPre=/bin/rm -f %t/container-web.pid %t/container-web.ctr-id\nExecStart=/usr/bin/podman container run --conmon-pidfile %t/container-web.pid --cidfile %t/container-web.ctr-id --cgroups=no-conmon --replace -d -p 80:80 --name web docker.io/library/nginx\nExecStop=/usr/bin/podman container stop --ignore --cidfile %t/container-web.ctr-id -t 10\nExecStopPost=/usr/bin/podman container rm --ignore -f --cidfile %t/container-web.ctr-id\nPIDFile=%t/container-web.pid\nType=forking\n\n[Install]\nWantedBy=multi-user.target default.target"
+      "contents": "[Unit]\nDescription=Docker container-web.service\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=docker start -p 80:80 --restart=always --name web nginx\nExecStop=docker stop web\n\n[Install]\nWantedBy=multi-user.target"
     }]
   }
 }
