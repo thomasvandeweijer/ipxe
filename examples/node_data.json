@@ -1,0 +1,44 @@
+[
+  {
+    "customer": {
+      "name": "acme",
+      "group": [
+        {
+          "id"  : 1,
+          "IPv4": "192.0.28.2",
+          "IPv6": "2001:678:2c:0:194:0:28:2",
+          "NSID": "ns1234",
+          "domains": [
+            "example.com",
+            "example.org"
+          ]
+        },
+        {
+          "id"  : 2,
+          "IPv4": "192.0.28.3",
+          "IPv6": "2001:678:2c:0:194:0:28:3",
+          "NSID": "ns2345",
+          "domains": [
+            "example.net"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "customer": {
+      "name": "blah",
+      "group": [
+        {
+          "id"  : 1,
+          "IPv4": "192.0.28.4",
+          "IPv6": "2001:678:2c:0:194:0:28:4",
+          "NSID": "ns3456",
+          "domains": [
+            "example.nl"
+          ]
+        }
+      ]
+    }
+  }
+]
