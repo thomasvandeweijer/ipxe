@@ -84,7 +84,7 @@
       {
         "path": "/var/tmp/acme/example.com.zone",
         "contents": {
-          "source": "https://ipxe.thomasvdw.com/examples/examples.com.zone"
+          "source": "https://ipxe.thomasvdw.com/examples/example.com.zone"
         },
         "mode": 644,
         "user": {
@@ -97,7 +97,7 @@
       {
         "path": "/var/tmp/acme/example.org.zone",
         "contents": {
-          "source": "https://ipxe.thomasvdw.com/examples/examples.org.zone"
+          "source": "https://ipxe.thomasvdw.com/examples/example.org.zone"
         },
         "mode": 644,
         "user": {
@@ -110,7 +110,7 @@
       {
         "path": "/var/tmp/acme/example.net.zone",
         "contents": {
-          "source": "https://ipxe.thomasvdw.com/examples/examples.net.zone"
+          "source": "https://ipxe.thomasvdw.com/examples/example.net.zone"
         },
         "mode": 644,
         "user": {
