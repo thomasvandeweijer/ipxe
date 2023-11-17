@@ -1,53 +1,155 @@
 {
-  "ignition": { "version": "3.4.0" },
+  "ignition": {
+    "version": "3.4.0"
+  },
   "storage": {
     "disks": [
       {
         "device": "/dev/sda",
         "wipeTable": true,
-        "partitions": [{
-          "label": "raid.1.1",
-          "number": 1,
-          "sizeMiB": 0,
-          "startMiB": 0
-        }]
+        "partitions": [
+          {
+            "label": "raid.1.1",
+            "number": 1,
+            "sizeMiB": 0,
+            "startMiB": 0
+          }
+        ]
       },
       {
         "device": "/dev/sdb",
         "wipeTable": true,
-        "partitions": [{
-          "label": "raid.1.2",
-          "number": 1,
-          "sizeMiB": 0,
-          "startMiB": 0
-        }]
+        "partitions": [
+          {
+            "label": "raid.1.2",
+            "number": 1,
+            "sizeMiB": 0,
+            "startMiB": 0
+          }
+        ]
       }
     ],
-    "raid": [{
-      "devices": [
-        "/dev/disk/by-partlabel/raid.1.1",
-        "/dev/disk/by-partlabel/raid.1.2"
-      ],
-      "level": "raid1",
-      "name": "data"
-    }],
-    "filesystems": [{
-      "device": "/dev/md/data",
-      "path": "/var/lib/data",
-      "format": "ext4",
-      "label": "DATA"
-    }]
+    "raid": [
+      {
+        "devices": [
+          "/dev/disk/by-partlabel/raid.1.1",
+          "/dev/disk/by-partlabel/raid.1.2"
+        ],
+        "level": "raid1",
+        "name": "data"
+      }
+    ],
+    "filesystems": [
+      {
+        "device": "/dev/md/data",
+        "path": "/var/lib/data",
+        "format": "ext4",
+        "label": "DATA"
+      }
+    ],
+    "directories": [
+      {
+        "path": "/etc/sidn",
+        "mode": "644",
+        "user": {
+          "id": 0,
+          "name": "root"
+        },
+        "group": {
+          "id": 0,
+          "name": "root"
+        }
+      },
+      {
+        "path": "/var/tmp/acme",
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+      {
+        "path": "/var/tmp/blah",
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      }
+    ],
+    "files": [
+      {
+        "path": "/etc/sidn/node_data.json",
+        "contents": {
+          "source": "https://github.com/thomasvandeweijer/ipxe/blob/main/examples/node_data.json"
+        },
+        "mode": "644",
+        "user": {
+          "id": 0,
+          "name": "root"
+        },
+        "group": {
+          "id": 0,
+          "name": "root"
+        }
+      },
+      {
+        "path": "/var/tmp/acme/example.com.zone",
+        "contents": {
+          "source": "https://github.com/thomasvandeweijer/ipxe/blob/main/examples/examples.com.zone"
+        },
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+      {
+        "path": "/var/tmp/acme/example.org.zone",
+        "contents": {
+          "source": "https://github.com/thomasvandeweijer/ipxe/blob/main/examples/examples.org.zone"
+        },
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+      {
+        "path": "/var/tmp/acme/example.net.zone",
+        "contents": {
+          "source": "https://github.com/thomasvandeweijer/ipxe/blob/main/examples/examples.net.zone"
+        },
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      }
+    ]
   },
   "systemd": {
-    "units": [{
-      "name": "var-lib-data.mount",
-      "enabled": true,
-      "contents": "[Mount]\nWhat=/dev/md/data\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target"
-    },
-    {
-      "name": "container-web.service",
-      "enabled": true,
-      "contents": "[Unit]\nDescription=Podman container-web.service\nDocumentation=man:podman-generate-systemd(1)\nWants=network.target\nAfter=network-online.target\n\n[Service]\nEnvironment=PODMAN_SYSTEMD_UNIT=%n\nRestart=on-failure\nTimeoutStopSec=70\nExecStartPre=/bin/rm -f %t/container-web.pid %t/container-web.ctr-id\nExecStart=/usr/bin/podman container run --conmon-pidfile %t/container-web.pid --cidfile %t/container-web.ctr-id --cgroups=no-conmon --replace -d -p 80:80 --name web docker.io/library/nginx\nExecStop=/usr/bin/podman container stop --ignore --cidfile %t/container-web.ctr-id -t 10\nExecStopPost=/usr/bin/podman container rm --ignore -f --cidfile %t/container-web.ctr-id\nPIDFile=%t/container-web.pid\nType=forking\n\n[Install]\nWantedBy=multi-user.target default.target"
-    }]
+    "units": [
+      {
+        "name": "var-lib-data.mount",
+        "enabled": true,
+        "contents": "[Mount]\nWhat=/dev/md/data\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target"
+      },
+      {
+        "name": "nameserver-@.service",
+        "enabled": true,
+        "contents": "[Unit]\nDescription=Knot nameserver.service\nWants=network.target\nAfter=network-online.target\n\n[Service]\nRestart=on-failure\nTimeoutStopSec=70\nExecStartPre=/bin/rm -f %t/container-web.pid %t/container-web.ctr-id\nExecStart=/usr/bin/docker  run --conmon-pidfile %t/container-web.pid --cidfile %t/container-web.ctr-id --cgroups=no-conmon --replace -d -p 80:80 --name web docker.io/library/nginx\nExecStop=/usr/bin/podman container stop --ignore --cidfile %t/container-web.ctr-id -t 10\nExecStopPost=/usr/bin/podman container rm --ignore -f --cidfile %t/container-web.ctr-id\nPIDFile=%t/container-web.pid\nType=forking\n\n[Install]\nWantedBy=multi-user.target default.target"
+      }
+    ]
   }
 }

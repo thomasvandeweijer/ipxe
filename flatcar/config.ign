@@ -1,72 +1,150 @@
 {
-  "ignition": { "version": "3.4.0" },
+  "ignition": {
+    "version": "3.4.0"
+  },
   "storage": {
     "disks": [
       {
         "device": "/dev/sda",
         "wipeTable": true,
-        "partitions": [{
-          "label": "raid.1.1",
-          "number": 1,
-          "sizeMiB": 0,
-          "startMiB": 0
-        }]
+        "partitions": [
+          {
+            "label": "raid.1.1",
+            "number": 1,
+            "sizeMiB": 0,
+            "startMiB": 0
+          }
+        ]
       },
       {
         "device": "/dev/sdb",
         "wipeTable": true,
-        "partitions": [{
-          "label": "raid.1.2",
-          "number": 1,
-          "sizeMiB": 0,
-          "startMiB": 0
-        }]
+        "partitions": [
+          {
+            "label": "raid.1.2",
+            "number": 1,
+            "sizeMiB": 0,
+            "startMiB": 0
+          }
+        ]
       }
     ],
-    "raid": [{
-      "devices": [
-        "/dev/disk/by-partlabel/raid.1.1",
-        "/dev/disk/by-partlabel/raid.1.2"
-      ],
-      "level": "raid1",
-      "name": "data"
-    }],
-    "filesystems": [{
-      "device": "/dev/md/data",
-      "path": "/var/lib/data",
-      "format": "ext4",
-      "label": "DATA"
-    }],
-    "files": [{
-      "path": "/etc/systemd/network/10-dummy0.netdev",
-      "mode": 420,
-      "contents": { "source": "data:,%5BNetDev%5D%0AName%3Ddummy0%0AKind%3Ddummy" }
-    }]
+    "raid": [
+      {
+        "devices": [
+          "/dev/disk/by-partlabel/raid.1.1",
+          "/dev/disk/by-partlabel/raid.1.2"
+        ],
+        "level": "raid1",
+        "name": "data"
+      }
+    ],
+    "filesystems": [
+      {
+        "device": "/dev/md/data",
+        "path": "/var/lib/data",
+        "format": "ext4",
+        "label": "DATA"
+      }
+    ],
+    "directories": [
+      {
+        "path": "/etc/sidn",
+        "mode": "644"
+      },
+      {
+        "path": "/var/tmp/acme",
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+      {
+        "path": "/var/tmp/blah",
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      }
+    ],
+    "files": [
+      {
+        "path": "/etc/sidn/node_data.json",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/node_data.json"
+        },
+        "mode": "644"
+        }
+      },
+      {
+        "path": "/var/tmp/acme/example.com.zone",
+        "contents": {
+          "source": "https://https://ipxe.thomasvdw.com/examples/examples.com.zone"
+        },
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+      {
+        "path": "/var/tmp/acme/example.org.zone",
+        "contents": {
+          "source": "https://https://ipxe.thomasvdw.com/examples/examples.org.zone"
+        },
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+      {
+        "path": "/var/tmp/acme/example.net.zone",
+        "contents": {
+          "source": "https://https://ipxe.thomasvdw.com/examples/examples.net.zone"
+        },
+        "mode": "644",
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+      {
+        "path": "/etc/systemd/network/10-dummy0.netdev",
+        "mode": 420,
+        "contents": {
+          "source": "data:,%5BNetDev%5D%0AName%3Ddummy0%0AKind%3Ddummy"
+        }
+      }
+    ]
   },
   "systemd": {
-    "units": [{
-      "name": "var-lib-data.mount",
-      "enabled": true,
-      "contents": "[Mount]\nWhat=/dev/md/data\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target"
-    },
-    {
-      "name": "docker.service",
-      "enabled": true
-    },
-    {
-      "name": "container-dummy-network.service",
-      "enabled": true,
-      "contents": "[Unit]\nDescription=Makes a docker network that binds to dummy0\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=exec\nTimeoutStartSec=0\nExecStart=/usr/bin/docker network create -d macvlan --ipv6 --subnet=192.168.1.0/24 --gateway=192.168.1.1 --subnet=fd00:abc8:abc8::/64 --gateway=fd00:abc8:abc8::1 -o parent=dummy0 docker-dummy\nRestart=on-failure\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
-    },
-    {
-      "name": "container-web.service",
-      "enabled": true,
-      "contents": "[Unit]\nDescription=Docker container running Nginx\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force web\nExecStart=/usr/bin/docker run --network host --name web --pull always nginx\nExecStop=/usr/bin/docker stop web\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
-    },
-    {
-      "name": "container-web2.service",
-      "enabled": true,
-      "contents": "[Unit]\nDescription=Docker container running Nginx\nAfter=container-dummy-network.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force web2\nExecStart=/usr/bin/docker run --network docker-dummy --ip 192.168.1.2 --ip6 fd00:abc8:abc8::2 --name web2 --pull always nginx\nExecStop=/usr/bin/docker stop web2\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
-    }]
+    "units": [
+      {
+        "name": "var-lib-data.mount",
+        "enabled": true,
+        "contents": "[Mount]\nWhat=/dev/md/data\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target"
+      },
+      {
+        "name": "docker.service",
+        "enabled": true
+      },
+      {
+        "name": "nameserver-@.service",
+        "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\n#ExecStartPre=-/usr/bin/docker rm --force nameserver-%I\nExecStart=/usr/bin/docker run --network host --name nameserver-%I -v /etc/sidn:/etc/sidn -v /var/tmp/%I:/storage -e CUSTOMER=$CUSTOMER -e GROUP_ID=$GROUP_ID -d --pull always jeroenbulten/knot:sidni knotd\nExecStop=/usr/bin/docker stop nameserver-%I\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
+      }
+    ]
   }
 }
