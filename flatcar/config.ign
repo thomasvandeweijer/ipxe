@@ -50,11 +50,11 @@
     "directories": [
       {
         "path": "/etc/sidn",
-        "mode": "644"
+        "mode": 644
       },
       {
         "path": "/var/tmp/acme",
-        "mode": "644",
+        "mode": 644,
         "user": {
           "id": 53
         },
@@ -64,7 +64,7 @@
       },
       {
         "path": "/var/tmp/blah",
-        "mode": "644",
+        "mode": 644,
         "user": {
           "id": 53
         },
@@ -79,15 +79,14 @@
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/node_data.json"
         },
-        "mode": "644"
-        }
+        "mode": 644
       },
       {
         "path": "/var/tmp/acme/example.com.zone",
         "contents": {
           "source": "https://https://ipxe.thomasvdw.com/examples/examples.com.zone"
         },
-        "mode": "644",
+        "mode": 644,
         "user": {
           "id": 53
         },
@@ -100,7 +99,7 @@
         "contents": {
           "source": "https://https://ipxe.thomasvdw.com/examples/examples.org.zone"
         },
-        "mode": "644",
+        "mode": 644,
         "user": {
           "id": 53
         },
@@ -113,7 +112,7 @@
         "contents": {
           "source": "https://https://ipxe.thomasvdw.com/examples/examples.net.zone"
         },
-        "mode": "644",
+        "mode": 644,
         "user": {
           "id": 53
         },
