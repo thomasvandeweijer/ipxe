@@ -50,11 +50,11 @@
     "directories": [
       {
         "path": "/etc/sidn",
-        "mode": 644
+        "mode": 420
       },
       {
         "path": "/var/tmp/acme",
-        "mode": 644,
+        "mode": 493,
         "user": {
           "id": 53
         },
@@ -64,7 +64,7 @@
       },
       {
         "path": "/var/tmp/blah",
-        "mode": 644,
+        "mode": 493,
         "user": {
           "id": 53
         },
@@ -79,14 +79,14 @@
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/node_data.json"
         },
-        "mode": 644
+        "mode": 420
       },
       {
         "path": "/var/tmp/acme/example.com.zone",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.com.zone"
         },
-        "mode": 644,
+        "mode": 420,
         "user": {
           "id": 53
         },
@@ -99,7 +99,7 @@
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.org.zone"
         },
-        "mode": 644,
+        "mode": 420,
         "user": {
           "id": 53
         },
@@ -112,7 +112,7 @@
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.net.zone"
         },
-        "mode": 644,
+        "mode": 420,
         "user": {
           "id": 53
         },
@@ -125,6 +125,13 @@
         "mode": 420,
         "contents": {
           "source": "data:,%5BNetDev%5D%0AName%3Ddummy0%0AKind%3Ddummy"
+        }
+      },
+      {
+        "path": "/etc/systemd/network/20-dummy0.network",
+        "mode": 420,
+        "contents": {
+          "source": "data:,%5BMatch%5D%5CnName%3Ddummy0%5Cn%5Cn%5BNetwork%5D%5CnAddress%3D192.0.28.2%2F24%5CnAddress%3D2001%3A678%3A2c%3A%3A192%3A0%3A28%3A2%2F48%5CnAddress%3D192.0.28.3%2F24%5CnAddress%3D2001%3A678%3A2c%3A%3A192%3A0%3A28%3A3%2F48%5CnAddress%3D192.0.28.4%2F24%5CnAddress%3D2001%3A678%3A2c%3A%3A192%3A0%3A28%3A4%2F48"
         }
       }
     ]
@@ -142,7 +149,7 @@
       },
       {
         "name": "nameserver-@.service",
-        "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\n#ExecStartPre=-/usr/bin/docker rm --force nameserver-%I\nExecStart=/usr/bin/docker run --network host --name nameserver-%I -v /etc/sidn:/etc/sidn -v /var/tmp/%I:/storage -e CUSTOMER=$CUSTOMER -e GROUP_ID=$GROUP_ID -d --pull always jeroenbulten/knot:sidni knotd\nExecStop=/usr/bin/docker stop nameserver-%I\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
+        "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\n#ExecStartPre=-/usr/bin/docker rm --force nameserver-%I\nExecStart=/usr/bin/docker run --network host --name nameserver-%I -v /etc/sidn:/etc/sidn -v /var/tmp/%I:/storage -e CUSTOMER=$CUSTOMER -e GROUP_ID=$GROUP_ID -d --pull always jeroenbulten/knot:sidn knotd\nExecStop=/usr/bin/docker stop nameserver-%I\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
       }
     ]
   }
