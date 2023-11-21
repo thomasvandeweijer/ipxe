@@ -118,9 +118,22 @@
         }
       },
       {
-        "path": "/var/tmp/blah_0/example.net.zone",
+        "path": "/var/tmp/acme_1/example.net.zone",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.net.zone"
+        },
+        "mode": 420,
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+       {
+        "path": "/var/tmp/blah_0/example.nl.zone",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/example.nl.zone"
         },
         "mode": 420,
         "user": {
