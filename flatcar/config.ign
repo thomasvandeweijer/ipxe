@@ -53,7 +53,7 @@
         "mode": 420
       },
       {
-        "path": "/var/tmp/acme",
+        "path": "/var/tmp/acme_0",
         "mode": 493,
         "user": {
           "id": 53
@@ -63,7 +63,17 @@
         }
       },
       {
-        "path": "/var/tmp/blah",
+        "path": "/var/tmp/acme_1",
+        "mode": 493,
+        "user": {
+          "id": 53
+        },
+        "group": {
+          "id": 53
+        }
+      },
+       {
+        "path": "/var/tmp/blah_0",
         "mode": 493,
         "user": {
           "id": 53
@@ -82,7 +92,7 @@
         "mode": 420
       },
       {
-        "path": "/var/tmp/acme/example.com.zone",
+        "path": "/var/tmp/acme_0/example.com.zone",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.com.zone"
         },
@@ -95,7 +105,7 @@
         }
       },
       {
-        "path": "/var/tmp/acme/example.org.zone",
+        "path": "/var/tmp/acme_0/example.org.zone",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.org.zone"
         },
@@ -108,7 +118,7 @@
         }
       },
       {
-        "path": "/var/tmp/acme/example.net.zone",
+        "path": "/var/tmp/blah_0/example.net.zone",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.net.zone"
         },
@@ -149,7 +159,7 @@
       },
       {
         "name": "nameserver-@.service",
-        "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force nameserver-%I\nExecStart=/usr/bin/docker run --network host --name nameserver-%I -v /etc/sidn:/etc/sidn -v /var/tmp/%I:/storage -e CUSTOMER=$CUSTOMER -e GROUP_ID=$GROUP_ID -d --pull always jeroenbulten/knot:sidn knotd\nExecStop=/usr/bin/docker stop nameserver-%I\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target"
+        "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=exec\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force nameserver-%i\nExecStart=/usr/bin/docker run --network host --name nameserver-%i -v /etc/sidn:/etc/sidn -v /var/tmp/%i/rundir:/rundir -v /var/tmp/%i:/storage -e CUSTOMER_GROUP=%i jeroenbulten/knot:sidn knotd\nExecStop=/usr/bin/docker stop nameserver-%i\nRestart=always\nRestartSec=60\n\n[Install]\nWantedBy=multi-user.target\n"
       }
     ]
   }
