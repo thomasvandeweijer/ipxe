@@ -2,6 +2,16 @@
   "ignition": {
     "version": "3.4.0"
   },
+  "passwd": {
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnCrYODG3Irtzcrixc4dLMVDYZVzU6RknXGULAq8D2QyjUVRHpwiUyg7LaoUu9sejQKNWAs57wCqiZ2fgYbYrejeVlW/fiP5cKGD/E8J+ul5K8wmtZsDEwUzQE0t40dqbdRHzo7uOYEu2acOrvs0giSD9zjo+hbgsLZ4DJtRWZ6REzYJb87jmm8ug4LUihBvCrLoiIC5RIchQRn1wkaYvqJ7f1MJDuPP0OdUDnhrnRJ0AubhPj16rJ7K1vcQqBV7GgjbrXAsGGJYpdISdSC7+tL+TWaznzSPESm9HGhN/AGpcKu0g8Efu5FOjlCXvC//kdkeBzW8ePmj47KqSZxOIgAtqUW/JGIzKgqiD0ZWOMGEyTp8CHlYTV3ZcLPbXTvD0GHWitz96y5DtUjY8lUrOHxwUdIFQOPsdo+eSKiECGBdk6/LXtbE3zb2NN+GDYfYP/m3NvXvyDnkPDt25n/jr3MG64jbX18YbekgaDdniZn3PaNfsrDvMtNY6aSMYuckM="
+        ]
+      }
+    ]
+  },
   "storage": {
     "disks": [
       {
