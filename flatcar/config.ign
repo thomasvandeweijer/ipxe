@@ -72,7 +72,7 @@
           "id": 53
         }
       },
-       {
+      {
         "path": "/var/tmp/blah_0",
         "mode": 493,
         "user": {
@@ -130,7 +130,7 @@
           "id": 53
         }
       },
-       {
+      {
         "path": "/var/tmp/blah_0/example.nl.zone",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.nl.zone"
@@ -173,6 +173,18 @@
       {
         "name": "nameserver-@.service",
         "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=exec\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force nameserver-%i\nExecStartPre=-mkdir -p /var/tmp/%i/rundir\nExecStartPre=-chown 53:53 /var/tmp/%i/rundir\nExecStart=/usr/bin/docker run --network host --name nameserver-%i -v /etc/sidn:/etc/sidn -v /var/tmp/%i/rundir:/rundir -v /var/tmp/%i:/storage -e CUSTOMER_GROUP=%i jeroenbulten/knot:sidn knotd\nExecStop=/usr/bin/docker stop nameserver-%i\nRestart=always\nRestartSec=60\nRestartPreventExitStatus=1\n\n[Install]\nWantedBy=multi-user.target\n"
+      },
+      {
+        "name": "nameserver-@acme_0.service",
+        "enabled": true
+      },
+      {
+        "name": "nameserver-@acme_1.service",
+        "enabled": true
+      },
+      {
+        "name": "nameserver-@blah_0.service",
+        "enabled": true
       }
     ]
   }
