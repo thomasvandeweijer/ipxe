@@ -1,0 +1,153 @@
+variant: flatcar
+version: 1.1.0
+passwd:
+  groups:
+    - name: nameserver
+      gid: 53
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnCrYODG3Irtzcrixc4dLMVDYZVzU6RknXGULAq8D2QyjUVRHpwiUyg7LaoUu9sejQKNWAs57wCqiZ2fgYbYrejeVlW/fiP5cKGD/E8J+ul5K8wmtZsDEwUzQE0t40dqbdRHzo7uOYEu2acOrvs0giSD9zjo+hbgsLZ4DJtRWZ6REzYJb87jmm8ug4LUihBvCrLoiIC5RIchQRn1wkaYvqJ7f1MJDuPP0OdUDnhrnRJ0AubhPj16rJ7K1vcQqBV7GgjbrXAsGGJYpdISdSC7+tL+TWaznzSPESm9HGhN/AGpcKu0g8Efu5FOjlCXvC//kdkeBzW8ePmj47KqSZxOIgAtqUW/JGIzKgqiD0ZWOMGEyTp8CHlYTV3ZcLPbXTvD0GHWitz96y5DtUjY8lUrOHxwUdIFQOPsdo+eSKiECGBdk6/LXtbE3zb2NN+GDYfYP/m3NvXvyDnkPDt25n/jr3MG64jbX18YbekgaDdniZn3PaNfsrDvMtNY6aSMYuckM= 
+    - name: nameserver
+      uid: 53
+      home_dir: /var/tmp
+      no_create_home: true
+      primary_group: nameserver
+      shell: /usr/sbin/nologin
+
+storage:
+  disks:
+    - device: /dev/sda
+      wipe_table: true
+      partitions:
+        - number: 1
+          label: raid.1.1
+          size_mib: 0
+          start_mib: 0
+    - device: /dev/sdb
+      wipe_table: true
+      partitions:
+        - number: 1
+          label: raid.1.2
+          size_mib: 0
+          start_mib: 0
+ 
+  raid:
+    - name: data
+      level: raid1
+      devices:
+        - /dev/disk/by-partlabel/raid.1.1
+        - /dev/disk/by-partlabel/raid.1.2
+ 
+  filesystems:
+    - path: /var/tmp
+      device: /dev/md/data
+      format: ext4
+      label: DATA
+
+  directories:
+    - path: /etc/sidn
+      mode: 0644
+    - path: /var/tmp/acme_0
+      user:
+        name: nameserver
+      group:
+        name: nameserver
+      mode: 0755
+    - path: /var/tmp/acme_1
+      user:
+        name: nameserver
+      group:
+        name: nameserver
+      mode: 0755
+    - path: /var/tmp/blah_0
+      user:
+        name: nameserver
+      group:
+        name: nameserver
+      mode: 0755
+
+  files:
+    - path: /etc/sidn/node_data.json
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/node_data.json
+      mode: 0644
+    - path: /var/tmp/acme_0/example.com.zone
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/example.com.zone
+      mode: 0644
+    - path: /var/tmp/acme_0/example.org.zone
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/example.org.zone
+      mode: 0644
+    - path: /var/tmp/acme_1/example.net.zone
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/example.net.zone
+      mode: 0644
+    - path: /var/tmp/blah_0/example.nl.zone
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/example.nl.zone
+      mode: 0644
+    - path: /etc/systemd/network/10-dummy0.netdev
+      contents:
+        inline: |
+          [NetDev]
+          Name=dummy0
+          Kind=dummy
+    - path: /etc/systemd/network/20-dummy0.network
+      contents:
+        inline: |
+          [Match]
+          Name=dummy0
+
+          [Network]
+          Address=194.0.30.2/24
+          Address=2001:678:2c::194:0:30:2/48
+          Address=194.0.30.3/24
+          Address=2001:678:2c::194:0:30:3/48
+          Address=194.0.30.4/24
+          Address=2001:678:2c::194:0:30:4/48
+      mode: 0644
+
+systemd:
+  units:
+    - name: var-lib-data.mount
+      enabled: true
+      contents: |
+        [Mount]
+        What=/dev/md/data
+        Where=/var/lib/data
+        Type=ext4
+
+        [Install]
+        WantedBy=local-fs.target
+    - name: docker.service
+      enabled: true
+    - name: nameserver-@.service
+      contents: |
+        [Unit]
+        Description=Docker container running Knot
+        After=docker.service
+        Requires=docker.service
+
+        [Service]
+        Type=exec
+        TimeoutStartSec=0
+        ExecStartPre=-/usr/bin/docker rm --force nameserver-%i
+        ExecStartPre=-mkdir -p /var/tmp/%i/rundir
+        ExecStartPre=-chown 53:53 /var/tmp/%i/rundir
+        ExecStart=/usr/bin/docker run --network host --name nameserver-%i -v /etc/sidn:/etc/sidn -v /var/tmp/%i/rundir:/rundir -v /var/tmp/%i:/storage -e CUSTOMER_GROUP=%i jeroenbulten/knot:sidn knotd
+        ExecStop=/usr/bin/docker stop nameserver-%i
+        Restart=always
+        RestartSec=60
+        RestartPreventExitStatus=1
+
+        [Install]
+        WantedBy=multi-user.target 
+    - name: nameserver-@acme_0.service
+      enabled: true
+    - name: nameserver-@acme_1.service
+      enabled: true
+    - name: nameserver-@blah_0.service
+      enabled: true
+
