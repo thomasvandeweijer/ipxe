@@ -209,7 +209,7 @@
         "name": "docker.service"
       },
       {
-        "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=exec\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force nameserver-%i\nExecStartPre=-mkdir -p /var/tmp/%i/rundir\nExecStartPre=-chown 53:53 /var/tmp/%i/rundir\nExecStart=/usr/bin/docker run --network host --name nameserver-%i -v /etc/sidn:/etc/sidn -v /var/tmp/%i/rundir:/rundir -v /var/tmp/%i:/storage -e CUSTOMER_GROUP=%i jeroenbulten/knot:sidn knotd\nExecStop=/usr/bin/docker stop nameserver-%i\nRestart=always\nRestartSec=60\nRestartPreventExitStatus=1\n\n[Install]\nWantedBy=multi-user.target \n",
+        "contents": "[Unit]\nDescription=Docker container running Knot\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nType=exec\nTimeoutStartSec=0\nExecStartPre=-/usr/bin/docker rm --force nameserver-%i\nExecStartPre=-mkdir -p /var/lib/data/%i/rundir\nExecStartPre=-chown 53:53 /var/tmp/%i/rundir\nExecStart=/usr/bin/docker run --network host --name nameserver-%i -v /etc/sidn:/etc/sidn -v /var/tmp/%i/rundir:/rundir -v /var/tmp/%i:/storage -e CUSTOMER_GROUP=%i jeroenbulten/knot:sidn knotd\nExecStop=/usr/bin/docker stop nameserver-%i\nRestart=always\nRestartSec=60\nRestartPreventExitStatus=1\n\n[Install]\nWantedBy=multi-user.target \n",
         "name": "nameserver-@.service"
       },
       {
