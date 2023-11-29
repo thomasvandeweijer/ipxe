@@ -47,7 +47,7 @@ storage:
 
   directories:
     - path: /etc/sidn
-      mode: 0644
+      mode: 0755
     - path: /var/tmp/acme_0
       user:
         name: nameserver
@@ -71,22 +71,42 @@ storage:
     - path: /etc/sidn/node_data.json
       contents:
         source: https://ipxe.thomasvdw.com/examples/node_data.json
+      user:
+        name: nameserver
+      group:
+        name: nameserver
       mode: 0644
     - path: /var/tmp/acme_0/example.com.zone
       contents:
         source: https://ipxe.thomasvdw.com/examples/example.com.zone
+      user:
+        name: nameserver
+      group:
+        name: nameserver
       mode: 0644
     - path: /var/tmp/acme_0/example.org.zone
       contents:
         source: https://ipxe.thomasvdw.com/examples/example.org.zone
+      user:
+        name: nameserver
+      group:
+        name: nameserver
       mode: 0644
     - path: /var/tmp/acme_1/example.net.zone
       contents:
         source: https://ipxe.thomasvdw.com/examples/example.net.zone
+      user:
+        name: nameserver
+      group:
+        name: nameserver
       mode: 0644
     - path: /var/tmp/blah_0/example.nl.zone
       contents:
         source: https://ipxe.thomasvdw.com/examples/example.nl.zone
+      user:
+        name: nameserver
+      group:
+        name: nameserver
       mode: 0644
     - path: /etc/systemd/network/10-dummy0.netdev
       contents:
@@ -108,9 +128,9 @@ storage:
           Address=194.0.30.4/24
           Address=2001:678:2c::194:0:30:4/48
       mode: 0644
-    - path: /deploytest/deploytest.py
+    - path: /deploy-test/deploy-test.py
       contents:
-        source: https://ipxe.thomasvdw.com/deploytest/deploytest.py
+        source: https://ipxe.thomasvdw.com/deploy-test/deploy-test.py
       mode: 0644
 
 systemd:
@@ -165,8 +185,7 @@ systemd:
         [Service]
         Type=oneshot
         ExecStartPre=-/usr/bin/docker rm --force deploy-test
-        ExecStart=/usr/bin/docker run --name deploy-test --pull always --log-driver=journald --net host -v /deploytest:/deploytest:ro -v /etc/sidn:/etc/sidn:ro jeroenbulten/deploy-test python /deploytest/deploytest.py
-        ExecStop=/usr/bin/docker stop deploytest
+        ExecStart=/usr/bin/docker run --name deploy-test --pull always --log-driver=journald --net host -v /deploy-test:/deploy-test:ro -v /etc/sidn:/etc/sidn:ro jeroenbulten/deploy-test python /deploy-test/deploy-test.py
         
         [Install]
         WantedBy=multi-user.target
