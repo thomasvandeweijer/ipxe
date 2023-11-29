@@ -160,7 +160,7 @@ systemd:
         ExecStartPre=-/usr/bin/docker rm --force nameserver-%i
         ExecStartPre=-mkdir -p /var/tmp/%i/rundir
         ExecStartPre=-chown 53:53 /var/tmp/%i/rundir
-        ExecStart=/usr/bin/docker run --network host --name nameserver-%i -v /etc/sidn:/etc/sidn -v /var/tmp/%i/rundir:/rundir -v /var/tmp/%i:/storage -e CUSTOMER_GROUP=%i jeroenbulten/knot:sidn knotd
+        ExecStart=/usr/bin/docker run --network host --name nameserver-%i -v /etc/sidn:/etc/sidn -v /var/tmp/%i/rundir:/rundir -v /var/lib/data/%i:/storage -e CUSTOMER_GROUP=%i jeroenbulten/knot:sidn knotd
         ExecStop=/usr/bin/docker stop nameserver-%i
         Restart=always
         RestartSec=60
