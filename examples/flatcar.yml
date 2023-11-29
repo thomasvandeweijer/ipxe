@@ -108,6 +108,10 @@ storage:
           Address=194.0.30.4/24
           Address=2001:678:2c::194:0:30:4/48
       mode: 0644
+    - path: /deploytest/deploytest.py
+      contents:
+        source: https://ipxe.thomasvdw.com/deploytest/deploytest.py
+      mode: 0644
 
 systemd:
   units:
@@ -150,4 +154,20 @@ systemd:
       enabled: true
     - name: nameserver-@blah_0.service
       enabled: true
+    - name: deploytest.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Deploytest
+        After=nameserver-@.service
+        Requires=docker.service
+        
+        [Service]
+        Type=oneshot
+        ExecStartPre=-/usr/bin/docker rm --force deploy-test
+        ExecStart=/usr/bin/docker run --name deploy-test --pull always --log-driver=journald --net host -v /deploytest:/deploytest:ro -v /etc/sidn:/etc/sidn:ro jeroenbulten/deploy-test python /deploytest/deploytest.py
+        ExecStop=/usr/bin/docker stop deploytest
+        
+        [Install]
+        WantedBy=multi-user.target
 
