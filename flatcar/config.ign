@@ -30,7 +30,7 @@
     "directories": [
       {
         "path": "/etc/sidn",
-        "mode": 420
+        "mode": 493
       },
       {
         "group": {
@@ -91,35 +91,65 @@
     ],
     "files": [
       {
+        "group": {
+          "name": "nameserver"
+        },
         "path": "/etc/sidn/node_data.json",
+        "user": {
+          "name": "nameserver"
+        },
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/node_data.json"
         },
         "mode": 420
       },
       {
+        "group": {
+          "name": "nameserver"
+        },
         "path": "/var/tmp/acme_0/example.com.zone",
+        "user": {
+          "name": "nameserver"
+        },
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.com.zone"
         },
         "mode": 420
       },
       {
+        "group": {
+          "name": "nameserver"
+        },
         "path": "/var/tmp/acme_0/example.org.zone",
+        "user": {
+          "name": "nameserver"
+        },
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.org.zone"
         },
         "mode": 420
       },
       {
+        "group": {
+          "name": "nameserver"
+        },
         "path": "/var/tmp/acme_1/example.net.zone",
+        "user": {
+          "name": "nameserver"
+        },
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.net.zone"
         },
         "mode": 420
       },
       {
+        "group": {
+          "name": "nameserver"
+        },
         "path": "/var/tmp/blah_0/example.nl.zone",
+        "user": {
+          "name": "nameserver"
+        },
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/example.nl.zone"
         },
@@ -141,9 +171,9 @@
         "mode": 420
       },
       {
-        "path": "/deploytest/deploytest.py",
+        "path": "/deploy-test/deploy-test.py",
         "contents": {
-          "source": "https://ipxe.thomasvdw.com/deploytest/deploytest.py"
+          "source": "https://ipxe.thomasvdw.com/deploy-test/deploy-test.py"
         },
         "mode": 420
       }
@@ -195,7 +225,7 @@
         "name": "nameserver-@blah_0.service"
       },
       {
-        "contents": "[Unit]\nDescription=Deploytest\nAfter=nameserver-@.service\nRequires=docker.service\n\n[Service]\nType=oneshot\nExecStartPre=-/usr/bin/docker rm --force deploy-test\nExecStart=/usr/bin/docker run --name deploy-test --pull always --log-driver=journald --net host -v /deploytest:/deploytest:ro -v /etc/sidn:/etc/sidn:ro jeroenbulten/deploy-test python /deploytest/deploytest.py\nExecStop=/usr/bin/docker stop deploytest\n\n[Install]\nWantedBy=multi-user.target\n",
+        "contents": "[Unit]\nDescription=Deploytest\nAfter=nameserver-@.service\nRequires=docker.service\n\n[Service]\nType=oneshot\nExecStartPre=-/usr/bin/docker rm --force deploy-test\nExecStart=/usr/bin/docker run --name deploy-test --pull always --log-driver=journald --net host -v /deploy-test:/deploy-test:ro -v /etc/sidn:/etc/sidn:ro jeroenbulten/deploy-test python /deploy-test/deploy-test.py\n\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
         "name": "deploytest.service"
       }
