@@ -209,7 +209,7 @@
         "name": "sshd.socket"
       },
       {
-        "contents": "[Unit]\nDescription=Remount etc read-only\nAfter=docker.service\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/mount -o remount,ro /etc\n[Install]\nWantedBy=multi-user.target\n",
+        "contents": "[Unit]\nDescription=Remount etc read-only\nAfter=docker.service\nAfter=sshd.service\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/mount -o remount,ro /etc\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
         "name": "lock-etc.service"
       },
