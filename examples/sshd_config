@@ -32,7 +32,6 @@ PermitTunnel no
 # Other
 Compression delayed
 UseDNS no
-UsePrivilegeSeparation sandbox
 
 PrintMotd yes
 
