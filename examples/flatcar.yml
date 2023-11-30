@@ -71,10 +71,6 @@ storage:
     - path: /etc/sidn/node_data.json
       contents:
         source: https://ipxe.thomasvdw.com/examples/node_data.json
-      user:
-        name: nameserver
-      group:
-        name: nameserver
       mode: 0644
     - path: /var/tmp/acme_0/example.com.zone
       contents:
@@ -174,7 +170,7 @@ systemd:
       enabled: true
     - name: nameserver-@blah_0.service
       enabled: true
-    - name: deploytest.service
+    - name: deploy-test.service
       enabled: true
       contents: |
         [Unit]
