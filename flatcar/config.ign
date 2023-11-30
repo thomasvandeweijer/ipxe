@@ -91,6 +91,12 @@
     ],
     "files": [
       {
+        "path": "/etc/ssh/sshd_config",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/sshd_config"
+        }
+      },
+      {
         "path": "/etc/sidn/node_data.json",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/node_data.json"
@@ -193,6 +199,19 @@
   },
   "systemd": {
     "units": [
+      {
+        "enabled": true,
+        "name": "sshd.service"
+      },
+      {
+        "mask": true,
+        "name": "sshd.socket"
+      },
+      {
+        "contents": "[Unit]\nDescription=Remount etc read-only\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/mount -o remount,ro /etc\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "lock-etc.service"
+      },
       {
         "contents": "[Mount]\nWhat=/dev/md/data\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target\n",
         "enabled": true,
