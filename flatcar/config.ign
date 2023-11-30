@@ -91,6 +91,7 @@
     ],
     "files": [
       {
+        "overwrite": true,
         "path": "/etc/ssh/sshd_config",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/sshd_config"

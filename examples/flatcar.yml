@@ -69,6 +69,7 @@ storage:
 
   files:
     - path: /etc/ssh/sshd_config
+      overwrite: true
       contents:
         source: https://ipxe.thomasvdw.com/examples/sshd_config
     - path: /etc/sidn/node_data.json
