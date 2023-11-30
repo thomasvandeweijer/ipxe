@@ -139,6 +139,18 @@ systemd:
       enabled: true
     - name: sshd.socket
       mask: true
+    - name: lock-etc.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Remount etc read-only
+        After=docker.service
+        
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/mount -o remount,ro /etc
+        [Install]
+        WantedBy=multi-user.target
     - name: var-lib-data.mount
       enabled: true
       contents: |
