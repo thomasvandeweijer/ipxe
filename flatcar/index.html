@@ -6,7 +6,7 @@ set CONFIGURL http://ipxe.thomasvdw.com/flatcar/config.ign
 
 set BASEURL https://${STREAM}.release.flatcar-linux.net/amd64-usr/${VERSION}
 
-kernel ${BASEURL}/flatcar_production_pxe.vmlinuz initrd=${BASEURL}/flatcar_production_pxe_image.cpio.gz flatcar.first_boot=1 flatcar.oem.id=packet ignition.platform.id=packet ignition.config.url=${CONFIGURL} console=ttyS1,115200n8 sysctl.kernel.unprivileged_bpf_disabled=1
+kernel ${BASEURL}/flatcar_production_pxe.vmlinuz initrd=${BASEURL}/flatcar_production_pxe_image.cpio.gz flatcar.first_boot=1 flatcar.oem.id=packet ignition.platform.id=packet ignition.config.url=${CONFIGURL} console=ttyS1,115200n8 sysctl.kernel.unprivileged_bpf_disabled=1 sysctl.net.ipv4.tcp_congestion_control=bbr
 initrd ${BASEURL}/flatcar_production_pxe_image.cpio.gz
 
 boot
