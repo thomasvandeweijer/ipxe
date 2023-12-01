@@ -135,6 +135,14 @@ storage:
 
 systemd:
   units:
+    - name: systemd-userdbd.service
+      enabled: true
+      dropins:
+        - name: 10-no-private-tmp.conf
+          contents: |
+            [Service]
+            PrivateTmp=no
+            PrivateDevices=no
     - name: sshd.service
       enabled: true
     - name: sshd.socket

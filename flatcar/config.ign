@@ -201,6 +201,16 @@
   "systemd": {
     "units": [
       {
+        "dropins": [
+          {
+            "contents": "[Service]\nPrivateTmp=no\nPrivateDevices=no\n",
+            "name": "10-no-private-tmp.conf"
+          }
+        ],
+        "enabled": true,
+        "name": "systemd-userdbd.service"
+      },
+      {
         "enabled": true,
         "name": "sshd.service"
       },
