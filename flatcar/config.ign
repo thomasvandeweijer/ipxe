@@ -91,6 +91,20 @@
     ],
     "files": [
       {
+        "path": "/etc/sysctl.d/80-swappiness.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,vm.swappiness%3D10"
+        }
+      },
+      {
+        "path": "/etc/sysctl.d/80-tcp-congestion-control.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,net.ipv4.tcp_congestion_control%3Dbbr"
+        }
+      },
+      {
         "overwrite": true,
         "path": "/etc/ssh/sshd_config",
         "contents": {
@@ -217,6 +231,20 @@
         "contents": "[Mount]\nWhat=/dev/md/data\nWhere=/var/lib/data\nType=ext4\n\n[Install]\nWantedBy=local-fs.target\n",
         "enabled": true,
         "name": "var-lib-data.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Turn on swap\nRequires=create-swapfile.service\nAfter=create-swapfile.service\n\n[Swap]\nWhat=/var/lib/data/vm/swapfile\n\n[Install]\nWantedBy=multi-user.target        \n",
+        "enabled": true,
+        "name": "var-lib-data-vm-swapfile.swap"
+      },
+      {
+        "contents": "[Unit]\nDescription=Create a swapfile on physical disk\nRequiresMountsFor=/var/lib/data\nDefaultDependencies=no\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/mkdir -p /var/lib/data/vm\nExecStart=/usr/bin/fallocate -l 1024m /var/lib/data/vm/swapfile\nExecStart=/usr/bin/chmod 600 /var/lib/data/vm/swapfile\nExecStart=/usr/sbin/mkswap /var/lib/data/vm/swapfile\nRemainAfterExit=true\n",
+        "name": "create-swapfile.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=Disable CPU power saving\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/usr/bin/sh -c '/usr/bin/echo \"performance\" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'\n\n[Install]\nWantedBy=multi-user.target \n",
+        "enabled": true,
+        "name": "cpu-governor.service"
       },
       {
         "enabled": true,
