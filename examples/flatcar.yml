@@ -68,12 +68,6 @@ storage:
       mode: 0755
 
   files:
-    - path: /etc/sysctl.d/80-swappiness.conf
-      contents:
-        inline: "vm.swappiness=10"
-    - path: /etc/sysctl.d/80-tcp-congestion-control.conf
-      contents:
-        inline: "net.ipv4.tcp_congestion_control=bbr"
     - path: /etc/ssh/sshd_config
       overwrite: true
       contents:
@@ -168,46 +162,6 @@ systemd:
 
         [Install]
         WantedBy=local-fs.target
-    - name: var-lib-data-vm-swapfile.swap
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Turn on swap
-        Requires=create-swapfile.service
-        After=create-swapfile.service
-
-        [Swap]
-        What=/var/lib/data/vm/swapfile
-
-        [Install]
-        WantedBy=multi-user.target        
-    - name: create-swapfile.service
-      contents: |
-        [Unit]
-        Description=Create a swapfile on physical disk
-        RequiresMountsFor=/var/lib/data
-        DefaultDependencies=no
-
-        [Service]
-        Type=oneshot
-        ExecStart=/usr/bin/mkdir -p /var/lib/data/vm
-        ExecStart=/usr/bin/fallocate -l 1024m /var/lib/data/vm/swapfile
-        ExecStart=/usr/bin/chmod 600 /var/lib/data/vm/swapfile
-        ExecStart=/usr/sbin/mkswap /var/lib/data/vm/swapfile
-        RemainAfterExit=true
-    - name: cpu-governor.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Disable CPU power saving
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=yes
-        ExecStart=/usr/bin/sh -c '/usr/bin/echo "performance" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
-
-        [Install]
-        WantedBy=multi-user.target 
     - name: docker.service
       enabled: true
     - name: nameserver-@.service
