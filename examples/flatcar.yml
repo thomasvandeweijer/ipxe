@@ -162,6 +162,30 @@ systemd:
 
         [Install]
         WantedBy=local-fs.target
+    - name: var-lib-data-vm-swapfile.swap
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Turn on swap
+        Requires=create-swapfile.service
+        After=create-swapfile.service
+        [Swap]
+        What=/var/lib/data/vm/swapfile
+        [Install]
+        WantedBy=multi-user.target        
+    - name: create-swapfile.service
+      contents: |
+        [Unit]
+        Description=Create a swapfile on physical disk
+        RequiresMountsFor=/var/lib/data
+        DefaultDependencies=no
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/mkdir -p /var/lib/data/vm
+        ExecStart=/usr/bin/fallocate -l 1024m /var/lib/data/vm/swapfile
+        ExecStart=/usr/bin/chmod 600 /var/lib/data/vm/swapfile
+        ExecStart=/usr/sbin/mkswap /var/lib/data/vm/swapfile
+        RemainAfterExit=true
     - name: cpu-governor.service
       enabled: true
       contents: |

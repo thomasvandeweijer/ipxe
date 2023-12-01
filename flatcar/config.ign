@@ -219,6 +219,15 @@
         "name": "var-lib-data.mount"
       },
       {
+        "contents": "[Unit]\nDescription=Turn on swap\nRequires=create-swapfile.service\nAfter=create-swapfile.service\n[Swap]\nWhat=/var/lib/data/vm/swapfile\n[Install]\nWantedBy=multi-user.target        \n",
+        "enabled": true,
+        "name": "var-lib-data-vm-swapfile.swap"
+      },
+      {
+        "contents": "[Unit]\nDescription=Create a swapfile on physical disk\nRequiresMountsFor=/var/lib/data\nDefaultDependencies=no\n[Service]\nType=oneshot\nExecStart=/usr/bin/mkdir -p /var/lib/data/vm\nExecStart=/usr/bin/fallocate -l 1024m /var/lib/data/vm/swapfile\nExecStart=/usr/bin/chmod 600 /var/lib/data/vm/swapfile\nExecStart=/usr/sbin/mkswap /var/lib/data/vm/swapfile\nRemainAfterExit=true\n",
+        "name": "create-swapfile.service"
+      },
+      {
         "contents": "[Unit]\nDescription=Disable CPU power saving\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/usr/bin/sh -c '/usr/bin/echo \"performance\" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
         "name": "cpu-governor.service"
