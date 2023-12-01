@@ -91,6 +91,20 @@
     ],
     "files": [
       {
+        "path": "/etc/sysctl.d/80-swappiness.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,vm.swappiness%3D10"
+        }
+      },
+      {
+        "path": "/etc/sysctl.d/80-tcp-congestion-control.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,net.ipv4.tcp_congestion_control%3Dbbr"
+        }
+      },
+      {
         "overwrite": true,
         "path": "/etc/ssh/sshd_config",
         "contents": {
