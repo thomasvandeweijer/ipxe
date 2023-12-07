@@ -112,6 +112,13 @@
         }
       },
       {
+        "path": "/var/tmp/get-network-config.sh",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/get-network-config.sh"
+        },
+        "mode": 493
+      },
+      {
         "path": "/etc/sidn/node_data.json",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/node_data.json"
@@ -225,12 +232,23 @@
         "name": "systemd-userdbd.service"
       },
       {
+        "dropins": [
+          {
+            "contents": "[Service]\nEnvironmentFile=/var/run/network-config.env\nExecStartPre=/bin/sh -c \"/usr/bin/printf 'ListenAddress %s\\nListenAddress [%s]\\n' \\\"${GLOBAL_IP4}\\\" \\\"${GLOBAL_IP6\\\" > /etc/ssh/sshd_config.d/25-listen-address.conf\n",
+            "name": "10-listen-address.conf"
+          }
+        ],
         "enabled": true,
         "name": "sshd.service"
       },
       {
         "mask": true,
         "name": "sshd.socket"
+      },
+      {
+        "contents": "[Unit]\nDescription=Get node specific network configuration\nAfter=network.target\n\n[Service]\nType=oneshot\nExecStart=/var/tmp/get-network-config.sh > /var/run/network-config.env\n[Install]\nWantedBy=network.target\n",
+        "enabled": true,
+        "name": "get-network-config.service"
       },
       {
         "contents": "[Unit]\nDescription=Remount etc read-only\nAfter=docker.service\nAfter=sshd.service\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/mount -o remount,ro /etc\n[Install]\nWantedBy=multi-user.target\n",

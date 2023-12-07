@@ -78,6 +78,10 @@ storage:
       overwrite: true
       contents:
         source: https://ipxe.thomasvdw.com/examples/sshd_config
+    - path: /var/tmp/get-network-config.sh
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/get-network-config.sh
+      mode: 0755
     - path: /etc/sidn/node_data.json
       contents:
         source: https://ipxe.thomasvdw.com/examples/node_data.json
@@ -151,8 +155,26 @@ systemd:
             PrivateDevices=no
     - name: sshd.service
       enabled: true
+      dropins:
+        - name: 10-listen-address.conf
+          contents: |
+            [Service]
+            EnvironmentFile=/var/run/network-config.env
+            ExecStartPre=/bin/sh -c "/usr/bin/printf 'ListenAddress %s\nListenAddress [%s]\n' \"${GLOBAL_IP4}\" \"${GLOBAL_IP6\" > /etc/ssh/sshd_config.d/25-listen-address.conf
     - name: sshd.socket
       mask: true
+    - name: get-network-config.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Get node specific network configuration
+        After=network.target
+        
+        [Service]
+        Type=oneshot
+        ExecStart=/var/tmp/get-network-config.sh > /var/run/network-config.env
+        [Install]
+        WantedBy=network.target
     - name: lock-etc.service
       enabled: true
       contents: |
