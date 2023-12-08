@@ -234,7 +234,7 @@
       {
         "dropins": [
           {
-            "contents": "[Service]\nEnvironmentFile=/var/run/network-config.env\nExecStartPre=/bin/sh -c \"/usr/bin/printf 'ListenAddress %%s\\nListenAddress [%%s]\\n' ${GLOBAL_IP4} ${GLOBAL_IP6} > /etc/ssh/sshd_config.d/25-listen-address.conf\"\n\n[Unit]\nRequires=get-network-config.service\nAfter=get-network-config.service\n",
+            "contents": "[Unit]\nRequires=get-network-config.service\nAfter=get-network-config.service\n\n[Service]\nEnvironmentFile=/var/run/network-config.env\nExecStartPre=/bin/sh -c \"/usr/bin/printf 'ListenAddress %%s\\nListenAddress [%%s]\\n' ${GLOBAL_IP4} ${GLOBAL_IP6} > /etc/ssh/sshd_config.d/25-listen-address.conf\"\n",
             "name": "10-listen-address.conf"
           }
         ],
@@ -246,7 +246,7 @@
         "name": "sshd.socket"
       },
       {
-        "contents": "[Unit]\nDescription=Get node specific network configuration\n\n[Service]\nType=oneshot\nExecStart=/var/tmp/get-network-config.sh\nStandardOutput=file:/var/run/network-config.env\n",
+        "contents": "[Unit]\nDescription=Get node specific network configuration\nAfter=network-online.target\n\n[Service]\nType=oneshot\nExecStart=/var/tmp/get-network-config.sh\nStandardOutput=file:/var/run/network-config.env\n",
         "enabled": false,
         "name": "get-network-config.service"
       },

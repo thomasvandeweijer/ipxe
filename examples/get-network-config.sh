@@ -7,7 +7,7 @@ get_external_info() {
     local via
     local global_ip
     if [ "$1" != "4" ] && [ "$1" != "6" ]; then
-        echo "No valid protocol given. Should be either 4 or 6"
+        >&2 echo "No valid protocol given. Should be either 4 or 6"
         exit 1
     fi
 
@@ -27,14 +27,14 @@ read -r EXT_IF4 DEF_GW4 GLOBAL_IP4 <<<"$(get_external_info 4)"
 read -r EXT_IF6 DEF_GW6 GLOBAL_IP6 <<<"$(get_external_info 6)"
 
 if [ "${EXT_IF4}" != "${EXT_IF6}" ]; then
-    echo "External interface for IPv4 is different from the external interface for IPv6!"
+    >&2 echo "External interface for IPv4 is different from the external interface for IPv6!"
     exit 1
 fi
 
 # exit with an error if one of the keys returns an empty value
 for i in EXT_IF4 DEF_GW4 GLOBAL_IP4 DEF_GW6 GLOBAL_IP6; do
     if [ -z "${!i}" ]; then
-       echo "Error getting value $i from ip route info"
+       >&2 echo "Error getting value $i from ip route info"
        exit 1
     fi
 done
