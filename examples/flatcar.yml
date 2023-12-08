@@ -160,21 +160,23 @@ systemd:
           contents: |
             [Service]
             EnvironmentFile=/var/run/network-config.env
-            ExecStartPre=/bin/sh -c "/usr/bin/printf 'ListenAddress %s\nListenAddress [%s]\n' \"${GLOBAL_IP4}\" \"${GLOBAL_IP6\" > /etc/ssh/sshd_config.d/25-listen-address.conf
+            ExecStartPre=/bin/sh -c "/usr/bin/printf 'ListenAddress %%s\nListenAddress [%%s]\n' ${GLOBAL_IP4} ${GLOBAL_IP6} > /etc/ssh/sshd_config.d/25-listen-address.conf"
+            
+            [Unit]
+            Requires=get-network-config.service
+            After=get-network-config.service
     - name: sshd.socket
       mask: true
     - name: get-network-config.service
-      enabled: true
+      enabled: false
       contents: |
         [Unit]
         Description=Get node specific network configuration
-        After=network.target
         
         [Service]
         Type=oneshot
-        ExecStart=/var/tmp/get-network-config.sh > /var/run/network-config.env
-        [Install]
-        WantedBy=network.target
+        ExecStart=/var/tmp/get-network-config.sh
+        StandardOutput=file:/var/run/network-config.env
     - name: lock-etc.service
       enabled: true
       contents: |
