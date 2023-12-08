@@ -161,6 +161,7 @@ systemd:
             [Unit]
             Requires=get-network-config.service
             After=get-network-config.service
+            After=multi-user.target
 
             [Service]
             EnvironmentFile=/var/run/network-config.env
