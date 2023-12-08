@@ -164,6 +164,7 @@ systemd:
 
             [Service]
             EnvironmentFile=/var/run/network-config.env
+            ExecStartPre=/usr/bin/sleep 15
             ExecStartPre=/bin/sh -c "/usr/bin/printf 'ListenAddress %%s\nListenAddress [%%s]\n' ${GLOBAL_IP4} ${GLOBAL_IP6} > /etc/ssh/sshd_config.d/25-listen-address.conf"
     - name: sshd.socket
       mask: true

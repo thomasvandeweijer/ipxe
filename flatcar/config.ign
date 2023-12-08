@@ -234,7 +234,7 @@
       {
         "dropins": [
           {
-            "contents": "[Unit]\nRequires=get-network-config.service\nAfter=get-network-config.service\n\n[Service]\nEnvironmentFile=/var/run/network-config.env\nExecStartPre=/bin/sh -c \"/usr/bin/printf 'ListenAddress %%s\\nListenAddress [%%s]\\n' ${GLOBAL_IP4} ${GLOBAL_IP6} > /etc/ssh/sshd_config.d/25-listen-address.conf\"\n",
+            "contents": "[Unit]\nRequires=get-network-config.service\nAfter=get-network-config.service\n\n[Service]\nEnvironmentFile=/var/run/network-config.env\nExecStartPre=/usr/bin/sleep 15\nExecStartPre=/bin/sh -c \"/usr/bin/printf 'ListenAddress %%s\\nListenAddress [%%s]\\n' ${GLOBAL_IP4} ${GLOBAL_IP6} > /etc/ssh/sshd_config.d/25-listen-address.conf\"\n",
             "name": "10-listen-address.conf"
           }
         ],
