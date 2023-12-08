@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 get_external_info() {
 # return routable IP address, external interface and default gateway
 # the first positional parameter can be 4 or 6 and determines whether IPv4 of IPv6 information is returned

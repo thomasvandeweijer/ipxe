@@ -178,6 +178,7 @@ systemd:
         Type=oneshot
         ExecStart=/var/tmp/get-network-config.sh
         StandardOutput=file:/var/run/network-config.env
+        StandardError=file:/var/log/get-network-config.log
     - name: lock-etc.service
       enabled: true
       contents: |
