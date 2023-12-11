@@ -8,6 +8,7 @@ get_external_info() {
     local dev
     local via
     local global_ip
+
     if [ "$1" != "4" ] && [ "$1" != "6" ]; then
         >&2 echo "No valid protocol given. Should be either 4 or 6"
         exit 1
@@ -16,12 +17,15 @@ get_external_info() {
     PROTO=$1
     # determine the external interface by checking where the default route leads
     dev=$(ip -"${PROTO}" route show exact default | grep -Eo 'dev[[:space:]]*[^[:space:]]+' | cut -d' ' -f2)
-    via=$(ip -"${PROTO}" route show exact default | grep -Eo 'via[[:space:]]*[^[:space:]]+' | cut -d' ' -f2)
 
-    # now determine the globally routable public IP by checking which source address is used to get to the default gw
-    global_ip=$(ip -"${PROTO}" route get "${via}" | grep -Eo 'src[[:space:]]*[^[:space:]]+' | cut -d' ' -f2)
-
+    if [ -n "${dev}" ]; then
+    # determine the globally routable public IP by checking which source address is used to get to the default gw
+        via=$(ip -"${PROTO}" route show exact default | grep -Eo 'via[[:space:]]*[^[:space:]]+' | cut -d' ' -f2)
+        global_ip=$(ip -"${PROTO}" route get "${via}" | grep -Eo 'src[[:space:]]*[^[:space:]]+' | cut -d' ' -f2)
     printf "%s %s %s\n" "${dev}" "${via}" "${global_ip}"
+    else
+        return
+    fi
 
 }
 
