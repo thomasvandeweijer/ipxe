@@ -78,7 +78,7 @@ storage:
       overwrite: true
       contents:
         source: https://ipxe.thomasvdw.com/examples/sshd_config
-    - path: /var/tmp/get-network-config.sh
+    - path: /opt/bin/get-network-config.sh
       contents:
         source: https://ipxe.thomasvdw.com/examples/get-network-config.sh
       mode: 0755
@@ -172,12 +172,13 @@ systemd:
       contents: |
         [Unit]
         Description=Get node specific network configuration
+        ConditionPathExists=!/var/run/network-config.env
         After=network-online.target
         Wants=network-online.target
         
         [Service]
         Type=oneshot
-        ExecStart=/var/tmp/get-network-config.sh
+        ExecStart=/opt/bin/get-network-config.sh
         StandardOutput=file:/var/run/network-config.env
         StandardError=file:/var/log/get-network-config.log
     - name: lock-etc.service

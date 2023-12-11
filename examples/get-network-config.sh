@@ -31,21 +31,23 @@ get_external_info() {
 
 modified_fibonacci=(2 3 5 8 13 13 21 21 34 ) # start with fast retry then exponentially back off
 
+# get ipv4 data
 for i in "${modified_fibonacci[@]}"
 do
     read -r EXT_IF4 DEF_GW4 GLOBAL_IP4 <<<"$(get_external_info 4)"
     if [ -n "${EXT_IF4}" ] && [ -n "${DEF_GW4}" ] && [ -n "${GLOBAL_IP4}" ]; then
-       break
+       break # we succesfully retrieved all parameters
     fi
     >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
     sleep $i
 done
 
+# get ipv6 data
 for i in "${modified_fibonacci[@]}"
 do
     read -r EXT_IF6 DEF_GW6 GLOBAL_IP6 <<<"$(get_external_info 6)"
     if [ -n "${EXT_IF6}" ] && [ -n "${DEF_GW6}" ] && [ -n "${GLOBAL_IP6}" ]; then
-       break
+       break # we succesfully retrieved all parameters
     fi
     >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
     sleep $i
@@ -56,6 +58,7 @@ if [ "${EXT_IF4}" != "${EXT_IF6}" ]; then
     exit 1
 fi
 
+# print all parameters as key=value pairs
 for i in EXT_IF4 DEF_GW4 GLOBAL_IP4 DEF_GW6 GLOBAL_IP6; do
     echo "${i}=${!i}"
 done

@@ -112,7 +112,7 @@
         }
       },
       {
-        "path": "/var/tmp/get-network-config.sh",
+        "path": "/opt/bin/get-network-config.sh",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/get-network-config.sh"
         },
@@ -246,7 +246,7 @@
         "name": "sshd.socket"
       },
       {
-        "contents": "[Unit]\nDescription=Get node specific network configuration\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=oneshot\nExecStart=/var/tmp/get-network-config.sh\nStandardOutput=file:/var/run/network-config.env\nStandardError=file:/var/log/get-network-config.log\n",
+        "contents": "[Unit]\nDescription=Get node specific network configuration\nConditionPathExists=!/var/run/network-config.env\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=oneshot\nExecStart=/opt/bin/get-network-config.sh\nStandardOutput=file:/var/run/network-config.env\nStandardError=file:/var/log/get-network-config.log\n",
         "enabled": false,
         "name": "get-network-config.service"
       },
