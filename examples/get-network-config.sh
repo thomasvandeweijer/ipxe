@@ -34,18 +34,20 @@ modified_fibonacci=(2 3 5 8 13 13 21 21 34 ) # start with fast retry then expone
 for i in "${modified_fibonacci[@]}"
 do
     read -r EXT_IF4 DEF_GW4 GLOBAL_IP4 <<<"$(get_external_info 4)"
-    read -r EXT_IF6 DEF_GW6 GLOBAL_IP6 <<<"$(get_external_info 6)"
-
-    # see if any values came back empty
-    for j in EXT_IF4 DEF_GW4 GLOBAL_IP4 DEF_GW6 GLOBAL_IP6; do
-        if [ -z "${!j}" ]; then
-           >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
-           continue
-        fi
-    done
-    break # all values were succesfully retrieved
+    if [ -n "${EXT_IF4}" ] && [ -n "${DEF_GW4}" ] && [ -n "${GLOBAL_IP4}" ]; then
+       break
+    fi
+    >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
 done
 
+for i in "${modified_fibonacci[@]}"
+do
+    read -r EXT_IF6 DEF_GW6 GLOBAL_IP6 <<<"$(get_external_info 6)"
+    if [ -n "${EXT_IF6}" ] && [ -n "${DEF_GW6}" ] && [ -n "${GLOBAL_IP6}" ]; then
+       break
+    fi
+    >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
+done
 
 if [ "${EXT_IF4}" != "${EXT_IF6}" ]; then
     >&2 echo "External interface for IPv4 is different from the external interface for IPv6!"
