@@ -38,6 +38,7 @@ do
        break
     fi
     >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
+    sleep $i
 done
 
 for i in "${modified_fibonacci[@]}"
@@ -47,6 +48,7 @@ do
        break
     fi
     >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
+    sleep $i
 done
 
 if [ "${EXT_IF4}" != "${EXT_IF6}" ]; then
