@@ -125,7 +125,7 @@ storage:
           [NetDev]
           Name=dummy0
           Kind=dummy
-    - path: /etc/motd
+    - path: /run/flatcar/motd
       overwrite: false
       append:
         - inline: |

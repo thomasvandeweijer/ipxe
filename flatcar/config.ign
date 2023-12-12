@@ -186,7 +186,7 @@
       },
       {
         "overwrite": false,
-        "path": "/etc/motd",
+        "path": "/run/flatcar/motd",
         "append": [
           {
             "compression": "",
