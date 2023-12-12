@@ -178,21 +178,18 @@
         "mode": 420
       },
       {
+        "path": "/etc/motd.d/sidn.conf",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/motd"
+        },
+        "mode": 420
+      },
+      {
         "path": "/etc/systemd/network/10-dummy0.netdev",
         "contents": {
           "compression": "",
           "source": "data:,%5BNetDev%5D%0AName%3Ddummy0%0AKind%3Ddummy%0A"
         }
-      },
-      {
-        "overwrite": false,
-        "path": "/run/flatcar/motd",
-        "append": [
-          {
-            "compression": "",
-            "source": "data:,test%0A"
-          }
-        ]
       },
       {
         "path": "/etc/systemd/network/20-dummy0.network",

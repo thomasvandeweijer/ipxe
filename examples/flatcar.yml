@@ -119,17 +119,16 @@ storage:
       group:
         name: nameserver
       mode: 0644
+    - path: /etc/motd.d/sidn.conf
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/motd
+      mode: 0644
     - path: /etc/systemd/network/10-dummy0.netdev
       contents:
         inline: |
           [NetDev]
           Name=dummy0
           Kind=dummy
-    - path: /run/flatcar/motd
-      overwrite: false
-      append:
-        - inline: |
-            test
     - path: /etc/systemd/network/20-dummy0.network
       contents:
         inline: |
