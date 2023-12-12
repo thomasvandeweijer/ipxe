@@ -126,9 +126,10 @@ storage:
           Name=dummy0
           Kind=dummy
     - path: /etc/motd
-      overwrite: true
-      contents:
-        source: https://ipxe.thomasvdw.com/examples/motd
+      overwrite: false
+      append:
+        - inline: |
+            test
     - path: /etc/systemd/network/20-dummy0.network
       contents:
         inline: |
