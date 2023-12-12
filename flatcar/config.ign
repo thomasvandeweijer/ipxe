@@ -185,13 +185,11 @@
         }
       },
       {
-        "overwrite": false,
+        "overwrite": true,
         "path": "/etc/motd",
-        "append": [
-          {
-            "source": "https://ipxe.thomasvdw.com/examples/motd"
-          }
-        ]
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/motd"
+        }
       },
       {
         "path": "/etc/systemd/network/20-dummy0.network",
