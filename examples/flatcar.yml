@@ -75,6 +75,13 @@ storage:
     - path: /etc/sysctl.d/80-tcp-congestion-control.conf
       contents:
         inline: "net.ipv4.tcp_congestion_control=bbr"
+    - path: /etc/profile.d/autologout.sh
+      contents:
+        inline: |
+           # Auto logout in one hour
+           TMOUT=3600
+           readonly TMOUT
+           export TMOUT
     - path: /etc/ssh/sshd_config
       overwrite: true
       contents:
