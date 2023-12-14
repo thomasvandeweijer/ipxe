@@ -192,6 +192,34 @@
         "mode": 420
       },
       {
+        "path": "/etc/nftables.conf",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/nftables.conf"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/nftables.rules.d/raw.nft",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/raw.nft"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/nftables.rules.d/filter.nft",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/filter.nft"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/nftables.rules.d/filter6.nft",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/filter6.nft"
+        },
+        "mode": 420
+      },
+      {
         "path": "/etc/systemd/network/10-dummy0.netdev",
         "contents": {
           "compression": "",
@@ -263,6 +291,11 @@
         "contents": "[Unit]\nDescription=Get node specific network configuration\nConditionPathExists=!/var/run/network-config.env\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=oneshot\nExecStart=/opt/bin/get-network-config.sh\nStandardOutput=file:/var/run/network-config.env\nStandardError=file:/var/log/get-network-config.log\n",
         "enabled": false,
         "name": "get-network-config.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=nftables\nDocumentation=man:nft(8) http://wiki.nftables.org\nWants=network-pre.target\nBefore=network-pre.target shutdown.target\nConflicts=shutdown.target\nDefaultDependencies=no\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nStandardInput=null\nProtectSystem=full\nProtectHome=true\nExecStartPre=/usr/sbin/nft -cf /etc/nftables.conf\nExecStart=/usr/sbin/nft -f /etc/nftables.conf\nExecReload=/usr/sbin/nft -f /etc/nftables.conf\n\n[Install]\nWantedBy=sysinit.target\n",
+        "enabled": true,
+        "name": "nftables.service"
       },
       {
         "contents": "[Unit]\nDescription=Remount etc read-only\nAfter=docker.service\nAfter=sshd.service\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/mount -o remount,ro /etc\n[Install]\nWantedBy=multi-user.target\n",

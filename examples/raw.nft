@@ -1,0 +1,8 @@
+# bypass connection tracking for DNS traffic
+add table inet raw
+add chain inet raw prerouting { type filter hook prerouting priority -300; }
+add chain inet raw output { type filter hook output priority -300; }
+add rule inet raw prerouting udp dport 53 notrack
+add rule inet raw prerouting tcp dport 53 notrack
+add rule inet raw output udp sport 53 notrack
+add rule inet raw output tcp sport 53 notrack

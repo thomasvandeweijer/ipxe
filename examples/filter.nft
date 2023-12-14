@@ -1,0 +1,30 @@
+# Allow 10.x.x.x range in
+add rule ip filter INPUT ip saddr 10.0.0.0/8 counter accept
+
+# Allow icmp in
+add rule ip filter INPUT icmp type echo-request counter accept
+
+# Allow SSH in but limit the rate of new connections to 10/minute max
+# IPv4 only because that is were most port scanners live
+add set ip filter denylist4 { type ipv4_addr; flags dynamic, timeout; timeout 5m; }
+add counter ip filter cnt_ssh
+add rule ip filter INPUT ip saddr @denylist4 tcp dport 22 counter drop
+add rule ip filter INPUT tcp dport 22 ct state new limit rate over 10/minute add @denylist4 { ip saddr }
+add rule ip filter INPUT tcp dport 22 ct state new counter name cnt_ssh accept
+
+# Allow 10.x.x.x range out
+add rule ip filter OUTPUT ip daddr 10.0.0.0/8 counter accept
+
+# Allow icmp out
+add rule ip filter OUTPUT icmp type echo-request counter accept
+
+# Allow DNS, NTP, HTTP and HTTPS out
+add rule ip filter OUTPUT udp dport { 53, 123 } accept
+add rule ip filter OUTPUT tcp dport { 53 } accept
+add counter ip filter cnt_https
+add rule ip filter OUTPUT tcp dport { 80, 443 } log group 0 counter name cnt_https accept
+
+# Log outgoing connection attempts which are not explicitly configured
+add rule ip filter OUTPUT ct state new log group 0
+
+# keep new line at end of file
