@@ -199,13 +199,6 @@
         "mode": 420
       },
       {
-        "path": "/etc/nftables.rules.d/raw.nft",
-        "contents": {
-          "source": "https://ipxe.thomasvdw.com/examples/raw.nft"
-        },
-        "mode": 420
-      },
-      {
         "path": "/etc/nftables.rules.d/filter.nft",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/filter.nft"

@@ -134,10 +134,11 @@ storage:
       contents:
         source: https://ipxe.thomasvdw.com/examples/nftables.conf
       mode: 0644
-    - path: /etc/nftables.rules.d/raw.nft
-      contents:
-        source: https://ipxe.thomasvdw.com/examples/raw.nft
-      mode: 0644
+# disable raw ruleset for now because conntrack does not seem to work correctly
+#    - path: /etc/nftables.rules.d/raw.nft
+#      contents:
+#        source: https://ipxe.thomasvdw.com/examples/raw.nft
+#      mode: 0644
     - path: /etc/nftables.rules.d/filter.nft
       contents:
         source: https://ipxe.thomasvdw.com/examples/filter.nft
