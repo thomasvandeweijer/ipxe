@@ -211,7 +211,7 @@ systemd:
         StandardOutput=file:/var/run/network-config.env
         StandardError=file:/var/log/get-network-config.log
     - name: nftables.service
-      enabled: true
+      enabled: false
       contents: |
         [Unit]
         Description=nftables
