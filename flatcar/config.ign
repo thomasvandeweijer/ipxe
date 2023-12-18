@@ -105,6 +105,13 @@
         }
       },
       {
+        "path": "/etc/docker/daemon.json",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/6rmUlBQUFDKLCgzU7JSKCkqTdWBiKRlVqSm6CZnphTpgqWU0lIMDKwMDAwMraz0zUyUoMpSKwpSizJzU/NKEnNQDcgsMCtJTMpJLUYVzsksS9UtSi0uyS9Khcpw1XIBAgAA//9+KzoJhwAAAA=="
+        }
+      },
+      {
         "path": "/etc/profile.d/autologout.sh",
         "contents": {
           "compression": "",

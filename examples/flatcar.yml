@@ -75,6 +75,16 @@ storage:
     - path: /etc/sysctl.d/80-tcp-congestion-control.conf
       contents:
         inline: "net.ipv4.tcp_congestion_control=bbr"
+    - path: /etc/docker/daemon.json
+      contents:
+        inline: |
+            {
+                "ipv6": true,
+                "fixed-cidr-v6": "fd00:0001::/64",
+                "experimental": true,
+                "ip6tables": true,
+                "live-restore": true
+            }
     - path: /etc/profile.d/autologout.sh
       contents:
         inline: |
