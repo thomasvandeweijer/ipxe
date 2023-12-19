@@ -1,8 +1,13 @@
 # Allow 10.x.x.x range in
 add rule ip filter INPUT ip saddr 10.0.0.0/8 counter accept
 
-# Allow icmp in
+# Allow ICMP in
 add rule ip filter INPUT icmp type echo-request counter accept
+
+# Allow DNS in.
+# Return traffic needs to be handled by state established for traffic between containers
+add rule ip filter INPUT udp dport 53 counter accept
+add rule ip filter INPUT tcp dport 53 counter accept
 
 # Allow SSH in but limit the rate of new connections to 10/minute max
 # IPv4 only because that is were most port scanners live
@@ -15,7 +20,7 @@ add rule ip filter INPUT tcp dport 22 ct state new counter name cnt_ssh accept
 # Allow 10.x.x.x range out
 add rule ip filter OUTPUT ip daddr 10.0.0.0/8 counter accept
 
-# Allow icmp out
+# Allow ICMP out
 add rule ip filter OUTPUT icmp type echo-request counter accept
 
 # Allow DNS, NTP, HTTP and HTTPS out

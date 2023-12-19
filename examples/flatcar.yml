@@ -144,11 +144,6 @@ storage:
       contents:
         source: https://ipxe.thomasvdw.com/examples/nftables.conf
       mode: 0644
-# disable raw ruleset for now because conntrack does not seem to work correctly
-#    - path: /etc/nftables.rules.d/raw.nft
-#      contents:
-#        source: https://ipxe.thomasvdw.com/examples/raw.nft
-#      mode: 0644
     - path: /etc/nftables.rules.d/filter.nft
       contents:
         source: https://ipxe.thomasvdw.com/examples/filter.nft
@@ -221,11 +216,10 @@ systemd:
         StandardOutput=file:/var/run/network-config.env
         StandardError=file:/var/log/get-network-config.log
     - name: nftables.service
-      enabled: false
+      enabled: true
       contents: |
         [Unit]
         Description=nftables
-        Documentation=man:nft(8) http://wiki.nftables.org
         Wants=network-pre.target
         Before=network-pre.target shutdown.target
         Conflicts=shutdown.target

@@ -5,7 +5,12 @@ add rule ip6 filter INPUT icmpv6 type { destination-unreachable, packet-too-big,
 add counter ip6 filter cnt_ssh6
 add rule ip6 filter INPUT tcp dport 22 ct state new counter name cnt_ssh6 accept
 
-# Allow icmp out
+# Allow DNS in.
+# Return traffic needs to be handled by state established for traffic between containers
+add rule ip6 filter INPUT udp dport 53 counter accept
+add rule ip6 filter INPUT tcp dport 53 counter accept
+
+# Allow ICMP out
 add rule ip6 filter OUTPUT icmp type echo-request counter accept
 
 # Allow DNS, NTP, HTTP and HTTPS out
