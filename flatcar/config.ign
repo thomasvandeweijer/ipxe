@@ -126,6 +126,13 @@
         }
       },
       {
+        "overwrite": true,
+        "path": "/etc/audit/rules.d/99-default.rules",
+        "contents": {
+          "source": "https://ipxe.thomasvdw.com/examples/audit.rules"
+        }
+      },
+      {
         "path": "/opt/bin/get-network-config.sh",
         "contents": {
           "source": "https://ipxe.thomasvdw.com/examples/get-network-config.sh"
@@ -296,6 +303,10 @@
         "contents": "[Unit]\nDescription=nftables\nWants=network-pre.target\nBefore=network-pre.target shutdown.target\nConflicts=shutdown.target\nDefaultDependencies=no\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nStandardInput=null\nProtectSystem=full\nProtectHome=true\nExecStartPre=/usr/sbin/nft -cf /etc/nftables.conf\nExecStart=/usr/sbin/nft -f /etc/nftables.conf\nExecReload=/usr/sbin/nft -f /etc/nftables.conf\n\n[Install]\nWantedBy=sysinit.target\n",
         "enabled": true,
         "name": "nftables.service"
+      },
+      {
+        "enabled": true,
+        "name": "auditd.service"
       },
       {
         "contents": "[Unit]\nDescription=Remount etc read-only\nAfter=docker.service\nAfter=sshd.service\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/mount -o remount,ro /etc\n[Install]\nWantedBy=multi-user.target\n",

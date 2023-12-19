@@ -96,6 +96,10 @@ storage:
       overwrite: true
       contents:
         source: https://ipxe.thomasvdw.com/examples/sshd_config
+    - path: /etc/audit/rules.d/99-default.rules
+      overwrite: true
+      contents:
+        source: https://ipxe.thomasvdw.com/examples/audit.rules
     - path: /opt/bin/get-network-config.sh
       contents:
         source: https://ipxe.thomasvdw.com/examples/get-network-config.sh
@@ -237,6 +241,8 @@ systemd:
 
         [Install]
         WantedBy=sysinit.target
+    - name: auditd.service
+      enabled: true
     - name: lock-etc.service
       enabled: true
       contents: |
