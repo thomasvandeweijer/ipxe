@@ -36,7 +36,7 @@ do
     if [ -n "${EXT_IF4}" ] && [ -n "${DEF_GW4}" ] && [ -n "${GLOBAL_IP4}" ]; then
        break # we succesfully retrieved all parameters
     fi
-    >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
+    >&2 echo "Error getting IPv4 values from ip route info. Retrying after $i seconds"
     sleep $i
 done
 
@@ -47,7 +47,7 @@ do
     if [ -n "${EXT_IF6}" ] && [ -n "${DEF_GW6}" ] && [ -n "${GLOBAL_IP6}" ]; then
        break # we succesfully retrieved all parameters
     fi
-    >&2 echo "Error getting value $i from ip route info. Retrying after $i seconds"
+    >&2 echo "Error getting IPv6 values from ip route info. Retrying after $i seconds"
     sleep $i
 done
 
