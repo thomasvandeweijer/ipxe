@@ -40,7 +40,6 @@
 -w /etc/issue.net -p wa -k system-locale
 -w /etc/hosts -p wa -k system-locale
 -w /etc/hostname -p wa -k system-locale
--a always,exit -F dir=/etc/NetworkManager/ -F perm=wa -F key=system-locale
 
 ## Commented out because we don't have a /etc/sysconf
 #-w /etc/sysconfig/network -p wa -k system-locale
