@@ -11,13 +11,14 @@ add rule ip6 filter INPUT udp dport 53 counter accept
 add rule ip6 filter INPUT tcp dport 53 counter accept
 
 # Allow ICMP out
-add rule ip6 filter OUTPUT icmp type echo-request counter accept
+add rule ip6 filter OUTPUT icmpv6 type { echo-request, echo-reply, nd-router-solicit, nd-neighbor-solicit } counter accept
 
 # Allow DNS, NTP, HTTP and HTTPS out
 add rule ip6 filter OUTPUT udp dport { 53, 123 } accept
 add rule ip6 filter OUTPUT tcp dport { 53 } accept
 add counter ip6 filter cnt_https6
-add rule ip6 filter OUTPUT tcp dport { 80, 443 } log group 0 counter name cnt_https6 accept
+# add rule ip6 filter OUTPUT tcp dport { 80, 443 } log group 0 counter name cnt_https6 accept
+add rule ip6 filter OUTPUT tcp dport { 80, 443 } counter name cnt_https6 accept
 
 # Log outgoing connection attempts which are not explicitly configured
 add rule ip6 filter OUTPUT ct state new log group 0
