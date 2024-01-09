@@ -1,5 +1,5 @@
 # Allow icmp in
-add rule ip6 filter INPUT icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, echo-reply, echo-request, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } ct state new,related,established counter accept
+add rule ip6 filter INPUT icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, echo-reply, echo-request, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } counter accept
 
 # Allow SSH in
 add counter ip6 filter cnt_ssh6
