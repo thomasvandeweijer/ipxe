@@ -1,7 +1,7 @@
 #!ipxe
 
 set STREAM stable
-set VERSION 3815.2.0
+set VERSION current
 set BASEURL https://${STREAM}.release.flatcar-linux.net/amd64-usr/${VERSION}
 
 kernel ${BASEURL}/flatcar_production_pxe.vmlinuz initrd=${BASEURL}/flatcar_production_pxe_image.cpio.gz flatcar.first_boot=1 flatcar.oem.id=packet ignition.platform.id=packet console=ttyS1,115200n8 sysctl.kernel.unprivileged_bpf_disabled=1
